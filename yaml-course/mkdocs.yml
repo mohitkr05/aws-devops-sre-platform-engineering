@@ -1,0 +1,8 @@
+---
+site_name: YAML Course documentation
+theme: readthedocs
+highlightjs: true
+site_dir: docs/
+hljs_languages:
+  - yaml
+  - python

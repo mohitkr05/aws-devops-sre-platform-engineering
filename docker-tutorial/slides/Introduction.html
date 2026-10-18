@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Docker Hands-on Tutorial</title>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    <style>
+        :root {
+            --animate-delay: 0.5s;
+          
+        }        
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: "Khand", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+        
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      
+      
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        
+        width: 35%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 60%;
+        float: right;
+        padding-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+<!-- ![bg left:20% 20%](../assets/images/mk-logo.png) -->
+
+.center[
+<img src="../assets/images/01-primary-blue-docker-logo.png" width=50%   class="animate__animated animate__fadeIn"/>
+]
+
+
+<h1 class="animate__animated animate__fadeIn"> Complete Docker Hands-on</h1>
+
+
+
+.right[
+<img src="../assets/images/mk-logo.png" width=10% />
+]
+ 
+By - Mohit Kumar
+[mohitkr.com](https://mohitkr.com)
+
+---
+
+## Agenda
+
+--
+
+- What is Docker and why we use it?
+
+--
+
+- Understanding containers, images, Dockerfiles, tags and registeries
+
+--
+
+- Configuring, running, listing and inspecting Docker containers
+
+--
+
+- Check the logs for a docker container
+
+--
+
+- Docker container networking
+
+--
+
+- Docker container storage
+
+--
+
+- Environment variables
+
+--
+
+- Building pushing Docker images
+
+--
+
+- Docker image examples
+
+--
+
+- Working with Docker compose
+
+--
+
+- Side car containers
+
+--
+
+- Kubernetes
+
+--
+
+---
+# Pre-requisite
+
+- Install Docker/Docker desktop
+- docker-compose
+- `git clone github.com/mohitkr05/docker-tutorial` for excercise files
+
+
+---
+# Transporting goods before shipping containers
+
+.right-column[
+<img src="../assets/images/Queens_Wharf,_Port_Adelaide,_before_1927.jpeg" width=50%   class="animate__animated animate__fadeIn"/>
+]
+
+.left-column[
+- Manual sorting of most shipments 
+- Dock front warehouses
+- Thousands of dock workers - handle
+- congestion in ports
+- Delays in shipping time,
+- losses from damage and theft
+]
+---
+
+# A Shipping container
+
+.center[
+<img src="../assets/images/shipping-container.png" width=30%   class="animate__animated animate__fadeIn"/>
+]
+
+--
+
+What problems does a shipping container solve?
+
+- *Standardization* 
+- *Isolation* 
+- *Abstraction*
+
+---
+
+# Resources in a Computer
+
+- Processor 
+- Memory 
+- Disk 
+- Network 
+
+.center[
+<img src="../assets/images/Computing-resources.png" width=100%   class="animate__animated animate__fadeIn"/>
+]
+
+---
+
+## Generalized Computing architecture
+
+.center[
+<img src="../assets/images/Computing-architecture-1.png" width=75%   class="animate__animated animate__fadeIn"/>
+]
+
+
+---
+## What is Virtualization?
+
+---
+## What are Virtual Machines?
+
+
+---
+
+## Types of Virtualization 
+
+
+---
+
+## Hypervisor
+
+---
+## Type 1 Hypervisor 
+
+.center[
+<img src="../assets/images/Computing-resources-type-1.png" width="50%" class="animate__animated animate__fadeIn"/>
+]
+
+---
+## Type 2 Hypervisor 
+
+.center[
+<img src="../assets/images/Computing-resources-type-2.png" width="50%" class="animate__animated animate__fadeIn"/>
+]
+
+---
+
+# Computing Containers: Key Concepts
+
+
+- **Lightweight Instances:** Containers are lightweight and efficient, utilizing the host OS kernel and sharing resources to run multiple isolated instances.
+- **Encapsulation:** Containers encapsulate applications and their dependencies, ensuring consistency and portability.
+- **Isolation:** Containers provide process isolation, preventing conflicts between applications running on the same system.
+- **Standalone Executables:** Containers are standalone executable packages containing everything needed to run a piece of software.
+- **Scalability:** Containers enable easy scaling of applications by running multiple instances in a consistent environment.
+
+---
+
+# Are containers Virtual Machines?
+--
+## No 
+
+
+---
+
+# Containers and Virtual Machines 
+
+
+Virtualization Level:
+
+- *Containers* : Virtualize only the operating system (OS) level, sharing the kernel with other containers on the same system.
+- *VMs* : Virtualize the entire hardware, including CPU, memory, storage, and network, creating a complete virtual machine on top of the physical hardware.
+
+---
+
+# Containers and Virtual Machines 
+
+Size and Resource Usage:
+
+- *Containers* : Are lightweight and fast to start, taking up only megabytes of space. This allows more containers to run on the same hardware compared to VMs.
+- *VMs* : Are heavier and slower to start, requiring gigabytes of space. This limits the number of VMs that can run on the same hardware.
+
+---
+
+# Containers and Virtual Machines 
+
+Isolation:
+
+- *Containers* : Share the host OS kernel, but have their own isolated file system, processes, and resources. This provides a good level of isolation, but security boundaries are not airtight.
+- *VMs* : Have their own complete virtual hardware, providing stronger isolation and greater security guarantees compared to containers
+
+---
+
+# Containers and Virtual Machines 
+
+Portability:
+
+- *Containers* : are highly portable. They run consistently on any system with the container runtime installed, regardless of the underlying OS.
+- *VMs* : are less portable. While portable across similar hardware, differences in hardware configuration can cause compatibility issues.
+
+---
+
+# Containers and Virtual Machines 
+
+Use Cases:
+
+- *Containers* : Ideal for microservices architecture, web applications, and other software requiring portability, efficiency, and scalability.
+- *VMs* : Suitable for legacy applications, software requiring direct hardware access, and situations where strong isolation and security are paramount.
+
+---
+
+# Will Containers replace Virtual Machines? 
+
+--
+## No
+
+--
+
+### Not everywhere
+
+---
+
+
+# What is Docker?
+
+.right[
+<img src="../assets/images/01-primary-blue-docker-logo.png" width=50%   class="animate__animated animate__fadeIn"/>
+]
+
+.left[
+
+- Docker is an open-source platform for developing, shipping, and running applications inside containers.
+- Containers allow bundling applications and their dependencies into a single package, ensuring consistency across different environments.
+- Docker enables lightweight, portable, and scalable application deployment.
+
+]
+
+---
+
+# DevOps Matrix of Hell
+
+.center[
+<img src="../assets/images/matrix-of-hell.png" width=60%   class="animate__animated animate__fadeIn"/>
+]
+
+---
+#  Matrix of hell
+
+To understand the matrix of hell, let us understand the following example, where we have two applications 
+  - `max-hell-python-2.py` & 
+  - `max-hell-python-3.py`, 
+  
+which are dependent on `Python 2.7` and `Python ~ 3.0` respectively.
+
+
+---
+
+# Matrix of hell
+
+.center[
+<img src="../assets/images/dedicated-wiring-guy.jpg"  width=60%   class="animate__animated animate__fadeIn"/>
+]
+
+
+---
+
+# Why not a virtual machine 
+
+
+
+---
+
+## Key Concepts
+
+- **Containers:** Lightweight, standalone, and executable packages that include everything needed to run a piece of software.
+
+- **Images:** Templates for containers, providing a snapshot of a file system, application code, and runtime.
+
+- **Docker Hub:** Centralized repository for sharing and distributing Docker images.
+
+---
+
+## How Docker Works
+
+```dockerfile
+# Dockerfile example
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y nginx
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+---
+
+## Docker images 
+
+In Docker, an image is a lightweight, standalone, and executable package that includes everything needed to run a piece of software, including the code, a runtime, libraries, environment variables, and system tools
+
+
+---
+
+## Features of a Docker image
+
+- Layered File System: Docker images are based on a layered file system. Each layer represents a set of file changes, and these layers are stacked on top of each other to form the complete image
+- Immutable: Docker images are designed to be immutable. Once an image is built, its contents do not change.
+- Registry: Docker images can be stored in repositories, which are collections of related images
+- Dockerfile: Docker images are created using a set of instructions specified in a file called a Dockerfile. 
+- Versioning: Docker images can have different versions (tags) to represent variations or updates
+- Distribution: Docker images can be easily distributed and shared across different environments. 
+
+---
+## Understanding the Layered file system 
+
+
+```dockerfile
+# Dockerfile example
+FROM ubuntu:latest <-- Layer 0
+RUN apt-get update && apt-get install -y nginx <-- Layer 1
+CMD ["nginx", "-g", "daemon off;"] <-- Layer 2 
+
+```
+
+
+
+
+```
+PS C:\workspace\git\docker-tutorial\docker-images-examples\nginx> docker history nginxmohit:1.0
+IMAGE          CREATED         CREATED BY                                      SIZE      COMMENT
+ef31eff93dcd   7 minutes ago   CMD ["nginx" "-g" "daemon off;"]                0B        buildkit.dockerfile.v0
+<missing>      7 minutes ago   EXPOSE map[80/tcp:{}]                           0B        buildkit.dockerfile.v0
+<missing>      7 minutes ago   RUN /bin/sh -c apt-get -y update && apt-get …   104MB     buildkit.dockerfile.v0
+<missing>      2 weeks ago     /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<missing>      2 weeks ago     /bin/sh -c #(nop) ADD file:99224b1f237763b30…   77.9MB
+<missing>      2 weeks ago     /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+<missing>      2 weeks ago     /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B
+<missing>      2 weeks ago     /bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH     0B
+<missing>      2 weeks ago     /bin/sh -c #(nop)  ARG RELEASE                  0B
+```
+*missing - This could happen when certain intermediate layers were pruned or removed, making it impossible to retrieve detailed information.
+---
+
+## Storage Driver comparison 
+
+| Storage Driver     | Characteristics                                           | Use Cases                                                    |
+|---------------------|-----------------------------------------------------------|--------------------------------------------------------------|
+| aufs                | Multiple filesystem layers, simplicity, and efficiency    | Commonly used on Ubuntu systems, older storage driver        |
+| devicemapper        | Thin provisioning, snapshot support, uses device mapper    | Used in Red Hat-based systems, good performance, complex setup|
+| btrfs               | Copy-on-write, snapshots, checksums, compression          | Advanced features, experimental or specific use cases         |
+| overlay2 / overlay  | Union mount filesystem, lightweight, simple and efficient | Default choice for many container runtimes, good performance   |
+| zfs                 | Copy-on-write, snapshots, data integrity verification     | Less common due to resource intensity, used for data integrity|
+
+
+---
+## Types of Docker Images 
+### Based on the functionality in Image building process 
+
+- Base Images: These images serve as the foundation for other images. Base images typically include a minimal operating system and essential runtime components. They are often used as starting points for building more specialized images.
+- Builder Images: Builder images are designed for the purpose of building and compiling code. They typically include development tools, compilers, and other necessary components to compile and build applications. Once the build is complete, the resulting artifacts can be copied to a smaller runtime image.
+- Multi-Stage Images: Multi-stage images are used to streamline the size of the final Docker image. They involve using multiple FROM statements in a single Dockerfile to create separate stages for building and running the application. This helps to reduce the size of the final runtime image by excluding unnecessary build dependencies.
+- Scratch Images: Scratch is a special minimalistic image that serves as an empty starting point. It contains no files or operating system components, making it the smallest possible image. Scratch images are useful for scenarios where the application is compiled into a single binary and doesn't rely on an operating system.
+
+---
+## Types of Docker Images 
+
+### Based on the verification
+
+- Official Images: Docker Hub maintains a set of "official" images that are curated and provided by the Docker community. These images cover a wide range of popular software and services, including operating systems, databases, web servers, and more.
+- Custom Images: Custom images are created by users or organizations to package and distribute their own applications. These images are tailored to specific use cases and often start with a base image before adding application code and dependencies.
+
+
+---
+
+## Dockerfile instructions
+
+- FROM
+  - Specifies the base image for the build. All subsequent instructions are based on this image.
+  - Usage: `FROM image:tag`
+- COPY 
+  - Copies files or directories from the source on the host into the image at the specified destination.
+  - Usage: `COPY source destination`
+- ADD 
+  - Similar to COPY but with additional features. It can copy local files, remote URLs, and extract compressed files.
+  - Usage: `ADD source destination`
+- RUN 
+  - Executes a command during the build process. This command is run in a new layer, and changes to the file system persist for the next instruction.
+  - Usage: `RUN command`
+- CMD 
+  - Provides default arguments for the entry point of the container. It is usually used to specify the command that will run when the container starts.
+  - Usage: `CMD ["executable", "param1", "param2"]` or `CMD command param1 param2`
+- ENTRYPOINT 
+  - Configures a container to run as an executable. The specified command is the default application for the container.
+  - Usage: `ENTRYPOINT ["executable", "param1", "param2"]` or `ENTRYPOINT command param1 param2`
+
+---
+## Dockerfile instructions
+
+- WORKDIR
+  - Sets the working directory for any subsequent RUN, CMD, ENTRYPOINT, COPY, and ADD instructions.
+  - Usage: `WORKDIR /path/to/directory`
+- EXPOSE
+  - Informs Docker that the container listens on the specified network ports at runtime. It does not actually publish the ports.
+  -  Usage: `EXPOSE port`
+- ENV
+  - Sets environment variables in the image. These variables are available to subsequent build stages and during the runtime of the container.
+  - Usage: `ENV key=value`
+- ARG
+  - Defines build-time variables that can be used in the Dockerfile. They are set using --build-arg when running docker build.
+  - Usage: `ARG variable=value`
+- LABEL
+  - Adds metadata to an image in the form of key-value pairs. It is often used to provide information about the image.
+  - Usage: `LABEL key="value"`
+
+---
+## Dockerfile instructions
+
+- VOLUME
+  - Creates a mount point for external volumes. This is typically used to persist data outside the container.
+  - Usage: `VOLUME ["/data"]`
+- USER
+  - Sets the user or UID to use when running the image. It changes the effective user ID at runtime.
+  - Usage: `USER username`
+- HEALTHCHECK
+  - Defines a command to check the health of a running container. This can be used with docker container inspect to check the health status.
+  - Usage: `HEALTHCHECK [options] CMD command`
+
+- SHELL  
+  - Configures the default shell used for the RUN instruction.
+  - Usage: `SHELL ["executable", "parameters"]`
+
+---
+
+## Example of Docker images creation
+
+1. Nginx image 
+2. Copying images and text files to Docker image 
+
+
+---
+
+## Docker Init 
+
+- You can use Docker init to create a Dockerfile in the current directory.
+
+```bash
+$ docker init
+``` 
+
+---
+
+### Docker init 
+
+```bash 
+
+Welcome to the Docker Init CLI!
+
+This utility will walk you through creating the following files with sensible defaults for your project:
+  - .dockerignore
+  - Dockerfile
+  - compose.yaml
+
+Let's get started!
+
+? What application platform does your project use?  [Use arrows to move, type to filter]
+  Go - suitable for a Go server application
+  Python - suitable for a Python server application
+  Node - suitable for a Node server application
+  Rust - suitable for a Rust server application
+  ASP.NET Core - suitable for an ASP.NET Core application
+> Other - general purpose starting point for containerizing your application
+  Don't see something you need? Let us know!
+  Quit
+
+``` 
+
+---
+
+## How to create your own Docker repository
+
+
+---
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+  // Set the slideshow display ratio
+  // Default: '4:3'
+  // Alternatives: '16:9', ...
+  ratio: '16:9',
+  highlightStyle: 'monokai',
+  highlightLanguage: 'bash',
+  navigation: {
+    // Enable or disable navigating using scroll
+    // Default: true
+    // Alternatives: false
+    scroll: true,
+
+    // Enable or disable navigation using touch
+    // Default: true
+    // Alternatives: false
+    touch: true,
+
+    // Enable or disable navigation using click
+    // Default: false
+    // Alternatives: true
+    click: false,
+  },
+
+      });
+
+    </script>
+  </body>
+</html>

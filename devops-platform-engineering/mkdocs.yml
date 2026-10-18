@@ -1,0 +1,16 @@
+site_name: DevOps and Platform Engineering
+site_description: Documentation of DevOps and Platform Engineering resources
+site_author: Mohit Kumar
+site_url: https://mohitkr05.github.io/devops-platform-engineering/
+theme: readthedocs
+repo_url: https://github.com/mohitkr05/devops-platform-engineering
+repo_name: DevOps and Platform Engineering
+
+nav:
+  - Home: index.md
+  - DevOps: devops/index.md
+  - Documentation:
+      - Markdown Syntax: additional-topics/markdown/index.md
+  # - Platform Engineering: platform.md
+  # - Tools: tools.md
+  # - About: about.md
